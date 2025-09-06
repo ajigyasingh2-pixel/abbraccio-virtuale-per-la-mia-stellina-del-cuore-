@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Abbraccio Virtuale</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at top, #1a1a2e, #000814);
+      overflow: hidden;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      color: white;
+    }
+
+    #game {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+    }
+
+    .heart {
+      font-size: 6rem;
+      position: absolute;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.5s;
+      z-index: 2;
+    }
+
+    .arm {
+      position: absolute;
+      top: 42%;
+      width: 160px;
+      height: 80px;
+      background: #ffaaaa;
+      border-radius: 80px 80px 20px 20px;
+      transition: all 0.7s ease;
+      z-index: 1;
+    }
+
+    #leftArm {
+      left: -180px;
+      transform: rotate(30deg);
+    }
+
+    #rightArm {
+      right: -180px;
+      transform: rotate(-30deg);
+    }
+
+    #hugButton {
+      position: absolute;
+      bottom: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px 30px;
+      font-size: 1.5rem;
+      background: #ff416c;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255,65,108,0.7);
+      transition: transform 0.2s;
+      z-index: 3;
+    }
+    #hugButton:active {
+      transform: translateX(-50%) scale(0.95);
+    }
+
+    #message {
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2rem;
+      opacity: 0;
+      transition: opacity 1.2s ease;
+      color: #ff99cc;
+      text-shadow: 0 0 10px #fff;
+      z-index: 3;
+    }
+
+    .heartRain {
+      position: absolute;
+      font-size: 2rem;
+      animation: fall 4s linear infinite;
+      z-index: 4;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <div id="leftArm" class="arm"></div>
+    <div class="heart" id="heart">💔</div>
+    <div id="rightArm" class="arm"></div>
+    <button id="hugButton">🤗 Abbracciami</button>
+    <div id="message">Questo abbraccio è solo per te, Bea 💖</div>
+  </div>
+
+  <!-- Musica romantica -->
+  <audio id="music" preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9d316c8d0b.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let progress = 0;
+    const leftArm = document.getElementById("leftArm");
+    const rightArm = document.getElementById("rightArm");
+    const heart = document.getElementById("heart");
+    const message = document.getElementById("message");
+    const hugButton = document.getElementById("hugButton");
+    const music = document.getElementById("music");
+
+    hugButton.addEventListener("click", () => {
+      progress++;
+      leftArm.style.left = (-180 + progress * 40) + "px";
+      rightArm.style.right = (-180 + progress * 40) + "px";
+
+      if (progress >= 5) {
+        heart.textContent = "❤️😊";
+        heart.style.transform = "translate(-50%, -50%) scale(1.4)";
+        message.style.opacity = 1;
+        hugButton.style.display = "none";
+        rainHearts();
+        music.play(); // parte la musica romantica
+      }
+    });
+
+    function rainHearts() {
+      for (let i = 0; i < 20; i++) {
+        let h = document.createElement("div");
+        h.classList.add("heartRain");
+        h.textContent = "❤️";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.animationDuration = (2 + Math.random() * 3) + "s";
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 5000);
+      }
+      setTimeout(rainHearts, 1200);
+    }
+  </script>
+</body>
+</html>
